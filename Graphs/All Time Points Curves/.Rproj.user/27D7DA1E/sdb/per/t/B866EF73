@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "##delete any pre-existing gridded images\ndo.call(file.remove, list(list.files(\"gridded\", full.names = TRUE)))\n\n\nfile = \"../../Process/all_time_points.tab\"\n\nclasses = c(\"numeric\",\"numeric\",\"character\",\"numeric\",\"factor\",\"numeric\",\"factor\",\"factor\",  \"factor\", \"character\")\n#           Row        Col         Name    Size     Media     Timepoint Temp    Array(1-6)   \"Condition \"Well\"\n\ndf = read.table(file,header=T, colClasses=classes,sep=\"\\t\")\n\ntimepoints = sort(unique(df$Time.Point))\n\n# df$Time.Point = as.numeric(as.character(df$Time.Point))\n\nagg = aggregate(formula = Size ~ Gene + Condition + Array + Time.Point, data = df, FUN=mean)\n\nrequire(ggplot2)\n\nconditions = sort(unique(df$Condition))\n\narrays = sort(unique(df$Array))\n\nfor(condition in conditions){\n  subCondition = subset(agg,agg$Condition == condition)\n  \n  for(array in arrays){\n    subArray = subset(subCondition,subCondition$Array == array)\n    \n    title = paste(condition, \"Array\", array)\n    \n    print(ggplot(subArray,aes(x=as.numeric(Time.Point),y=Size,color=Gene,group=Gene)) + \n            geom_line() + \n            ggtitle(title) + \n            theme(legend.position=\"none\"))\n    fn = paste(\"growth_curves\",condition,array,\"png\",sep=\".\")\n    ggsave(fn,path=\"graphs\")\n    \n  }\n  \n}\n\nprint(timepoints)\n",
+    "created" : 1496347019129.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3497479864",
+    "id" : "B866EF73",
+    "lastKnownWriteTime" : 1504286503,
+    "last_content_update" : 1504286503881,
+    "path" : "~/Sequencing_Research/Tools_&_Data/Robot Image Analysis Development/Robot Image Analysis 2.0/Graphs/All Time Points Curves/all_time_points_curves.R",
+    "project_path" : "all_time_points_curves.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}

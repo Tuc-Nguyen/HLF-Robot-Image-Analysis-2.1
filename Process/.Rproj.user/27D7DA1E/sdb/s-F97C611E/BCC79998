@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#####################################################################################\n#######Exclude Data points from final analysis\n#####################################################################################\n\n####Read in data\nclasses = c(\"numeric\",\"numeric\",\"character\",\"numeric\",\"factor\",\"numeric\",\"factor\",\"factor\")\n#           Row        Col         Name    Size     Media     Timepoint Temp    Array(1-6)\n\n# setwd(\"./organize_data\")\n\ndf = read.table(\"../Analyze/consolidated_data.txt\",header=T, colClasses=classes,sep=\"\\t\")\n\n##Add a column with \"Condition whichis the combination of Media and Temperature\nCondition = paste(df$Media, df$Temp, sep = \"_\")\nWell=paste(\"r\",df$Row,\"c\",df$Col,sep=\"\")\ndf$Condition = factor(Condition)\ndf$Well = Well\n\n################################\n##CLEAN AND TRANSFORM THE DATA\n\n##remove strains that are problematic\nstrain_remove_table = read.table(\"strains_to_remove.txt\",header=T,sep=\"\\t\")\n\ndf = subset(df, !(df$Gene %in% strain_remove_table$Gene ))\n            \n\n##remove spots that are problematic\nspot_remove_table = read.table(\"spots_to_remove.txt\",header=T,sep=\"\\t\",\n                               colClasses = c(\"factor\",\"factor\",\"factor\",\n                                              \"numeric\",\"numeric\",\"character\"))\n\nlibrary(dplyr)\n\ndf = anti_join(df, spot_remove_table, by = c(\"Array\",\"Media\" , \"Temp\", \"Row\",\"Column\"))\n\n##Remove the outer ring in each block, outer ring of whole plate, and second most outer ring of whole plate\n\nunusable_rows = c(1,2,4,5,8,9,12,13,16,17,20,21,24,25,28,29,31,32) \nunusable_cols = c(1,2,8,9,16,17,24,25,32,33,40,41,47,48)\n\ndf = subset(df, !(df$Row %in% unusable_rows))\ndf = subset(df, !(df$Col %in% unusable_cols))\n\n##At this stage, the df has had all the spots in the perimeters of the blocks removed\ndf = df[order(df$Array,df$Condition,df$Time.Point,df$Row,df$Col),]\n\n\n####Output all the time points\nwrite.table(df, \"all_time_points.tab\",row.names=F,sep=\"\\t\")\n\n\n",
+    "created" : 1496335333082.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3972525565",
+    "id" : "BCC79998",
+    "lastKnownWriteTime" : 1504286444,
+    "last_content_update" : 1504286444147,
+    "path" : "~/Sequencing_Research/Tools_&_Data/Robot Image Analysis Development/Robot Image Analysis 2.0/Process/process_data.R",
+    "project_path" : "process_data.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}

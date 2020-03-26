@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "###converts a matrix file to a table with \"Row\", \"Col\", and \"Gene\" columns\n\n###speficy the input\n\n\ninputs = c(\"Array1.96.matrix.txt\")\n\nfor(inputFileName in inputs){\n  \n\n##read in the matrix\n\narray_values = scan(inputFileName,what=\"character\",sep=\"\\t\")\n\n\n##Determine the array type\n\narray_type = length(array_values)\n\nif(array_type == 96){\n  num_col = 12\n  num_row = 8\n} else if(array_type == 384){\n  num_col = 24\n  num_ro1 = 16\n} else if(array_type == 1536){\n  num_col = 48\n  num_row = 32\n} else{\n  stop(\"INVALID ARRAY SIZE\")\n}\n\n###convert to data frame\n\nrows = rep(seq(1:num_row), each = num_col)\n\ncolumns = rep(seq(1:num_col),num_row)\n\noutput = data.frame(Row=rows,Column=columns,Gene=array_values)\n\n\n##write output\nbase_file_name = strsplit(inputFileName, \"\\\\.\")[[1]][1]\n\nfn = paste(base_file_name,array_type,\"table\",\"txt\",sep=\".\")\n\nwrite.table(output,fn, row.names = FALSE,sep=\"\\t\")\n\n\n}\n\n\n\n",
+    "created" : 1496325554380.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2355962160",
+    "id" : "DEE0A79C",
+    "lastKnownWriteTime" : 1504277068,
+    "last_content_update" : 1504277068029,
+    "path" : "~/Sequencing_Research/Tools_&_Data/Robot Image Analysis Development/Robot Image Analysis 2.0/Arrays/matrix2table.R",
+    "project_path" : "matrix2table.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

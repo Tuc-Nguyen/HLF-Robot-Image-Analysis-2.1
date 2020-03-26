@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "file = \"all_time_points.tab\"\n\nclasses = c(\"numeric\",\"numeric\",\"character\",\"numeric\",\"factor\",\"numeric\",\"factor\",\"factor\",  \"factor\", \"character\")\n#           Row        Col         Name    Size     Media     Timepoint Temp    Array(1-6)   \"Condition   \"Well\"  \n\ndf = read.table(file,header=T, colClasses=classes,sep=\"\\t\")\n\ntime_df = read.table(\"Maximal_Time_Points.txt\",header=T,sep=\"\\t\")\n\nout_df = as.data.frame(matrix(nrow = 0,ncol = ncol(df), dimnames = list(NULL,names(df))))\n\nmedia = sort(unique(df$Media))\n\nfor(m in media){\n  subMedia = subset(df, df$Media == m)\n  \n  temperatures = sort(unique(subMedia$Temp))\n  \n  for(temp in temperatures){\n    \n    subTemp = subset(subMedia,subMedia$Temp == temp)\n    \n    arrays = sort(unique(subTemp$Array))\n    \n    for(array in arrays){\n      \n      subArray = subset(subTemp, subTemp$Array == array)\n      \n      last = time_df$Max[time_df$Media == m &\n                           time_df$Temp == temp &\n                           time_df$Array == array]\n      \n      tempDF = subset(subArray , subArray$Time.Point <= last)\n      \n      out_df = rbind(out_df, tempDF)\n      \n    }\n  }\n}\n\nwrite.table(out_df, \"time_points_removed.tab\",sep=\"\\t\",row.names = F)\n      ",
+    "created" : 1502821458074.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1347833016",
+    "id" : "522B61C",
+    "lastKnownWriteTime" : 1504286624,
+    "last_content_update" : 1504286624714,
+    "path" : "~/Sequencing_Research/Tools_&_Data/Robot Image Analysis Development/Robot Image Analysis 2.0/Process/remove_time_points.R",
+    "project_path" : "remove_time_points.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}

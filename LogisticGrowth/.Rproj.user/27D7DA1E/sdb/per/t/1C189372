@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "modeled_file = \"logistic_growth.omit_errors_lowcorr_outlierRate_outlierMaxSize_under3Reps.tab\"\n\nclasses = c(\"numeric\",\"numeric\",\"character\",\"factor\",\n            #Row        Col         Name      Media\n            \"factor\",\"factor\",  \"factor\", \"character\",\n            #Temp    Array(1-6)  Condition    Well      \n            \"numeric\",\"numeric\",\"numeric\", \"numeric\")\n#             CC          R        MinSize     Corr\n\nmodeled_df = read.table(modeled_file,header=T, colClasses=classes,sep=\"\\t\")\n\nmodeled_df$SizeDiff = modeled_df$CC - modeled_df$MinSize\n\nwrite.table(modeled_df,\"logistic_growth.SizeDiff.tab\",row.names=F,sep=\"\\t\")",
+    "created" : 1502898758392.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "202764051",
+    "id" : "1C189372",
+    "lastKnownWriteTime" : 1504288967,
+    "last_content_update" : 1504288967353,
+    "path" : "~/Sequencing_Research/Tools_&_Data/Robot Image Analysis Development/Robot Image Analysis 2.0.1/LogisticGrowth/calculate_SizeDiff.R",
+    "project_path" : "calculate_SizeDiff.R",
+    "properties" : {
+    },
+    "relative_order" : 8,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}

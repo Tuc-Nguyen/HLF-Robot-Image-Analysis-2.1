@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#https://stats.stackexchange.com/questions/47802/whats-the-most-pain-free-way-to-fit-logistic-growth-curves-in-r\nlibrary(\"nls2\")\nrequire(ggplot2)\n\n##dep = name of your dependent variable, as it appears in data frame column name, in quotes eg \"Size\"\n\n##ind = name of your dependent variable, as it appears in data frame column name, in quotes eg \"Time.Point\"\n\n##yourdata = data.frame containing columns dep and ind\n\nlog.fit <- function(dep, ind, yourdata){\n  ##Self-starting...\n  \n  y <- yourdata[, dep]\n  x <- yourdata[, ind]\n  \n  ##observed population sizes\n  N_obs = y\n  ##time points\n  times = x\n  \n  ##calculate initial parameters for the logistic growth model\n  ##the final paramaters will be determined when the final model is created\n  SS<-getInitial(N_obs~SSlogis(times,alpha,xmid,scale),\n                 data=data.frame(N_obs=y,times=x))\n  \n  ##Adjust the paramaters so that they fit the values used in the classical ecological population growth equation\n  K_start<-SS[\"alpha\"]\n  R_start<-1/SS[\"scale\"]\n  N0_start<-SS[\"alpha\"]/(exp(SS[\"xmid\"]/SS[\"scale\"])+1)\n  \n  ##specify the ecological population growth formula for the model\n  log_formula<-formula(N_obs~K*N0*exp(R*times)/(K+N0*(exp(R*times)-1)))\n  \n  ##fit the model\n  m<-nls(log_formula,start=list(K=K_start,R=R_start,N0=N0_start))\n  ##get some estimation of goodness of fit so that bad model fits can be later removed\n  correlation_value = cor(N_obs,predict(m))\n  \n  ##determine a title for the given graph that is specific to condition, strain, and well\n  title = paste(\"Logistic Function\",yourdata$Condition[1],yourdata$Gene[1],yourdata$Well[1])\n  \n  ##graph the data as a scatterpot\n  ##plot the model fit as a red line on the scatterplot\n  print(ggplot(aes(x,y),data=yourdata) +\n          geom_point(aes(x,y)) +\n          ggtitle(title) +\n          geom_line(aes(x,y=predict(m),color=\"red\")) #plotting model fit\n       )\n\n  ##save the graph, user must have previously created \"model_success_graphs\" folder\n  ggsave(paste(title,\"png\",sep=\".\"),path=\"model_success_graphs\")\n  \n  ##Pull out the final paramters of the model  \n  K = coef(m)[1] #carrying capacity\n  R = coef(m)[2] #rate of growth\n  m0 = coef(m)[3] #initial population size\n  \n  \n  ##compile the data into one output\n  out <- data.frame(cbind(c(K=K,R=R,m0=m0,Corr = correlation_value)))\n  \n  ##throw a name onto the output column\n  names(out)[1] <- \"Logistic Curve\"\n  \n  ##return the output\n  return(out)\n}\n",
+    "created" : 1504286678737.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3278439187",
+    "id" : "8AAD6161",
+    "lastKnownWriteTime" : 1504287758,
+    "last_content_update" : 1504287758805,
+    "path" : "~/Sequencing_Research/Tools_&_Data/Robot Image Analysis Development/Robot Image Analysis 2.0.1/LogisticGrowth/log.fit.R",
+    "project_path" : "log.fit.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

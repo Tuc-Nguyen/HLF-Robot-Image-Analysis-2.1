@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "modeled_file = \"logistic_growth.SizeDiff.tab\"\n\nclasses = c(\"numeric\",\"numeric\",\"character\",\"factor\",\n            #Row        Col         Name      Media\n            \"factor\",\"factor\",  \"factor\", \"character\",\n            #Temp    Array(1-6)  Condition    Well      \n            \"numeric\",\"numeric\",\"numeric\", \"numeric\",\"numeric\")\n#             CC          R        MinSize     Corr   SizeDiff\n\nmodeled_df = read.table(modeled_file,header=T, colClasses=classes,sep=\"\\t\")\n\nnormCC = vector(length = nrow(modeled_df))\nnormR = vector(length = nrow(modeled_df))\nnormSizeDiff = vector(length = nrow(modeled_df))\n\nconditions = sort(unique(modeled_df$Condition))\n\nfor(condition in conditions){\n  \n  subCondition = subset(modeled_df,modeled_df$Condition == condition)\n  \n  for(array in sort(unique(subCondition$Array))){\n    \n    subArray = subset(subCondition, subCondition$Array == array)\n    \n    subRef = subset(subArray, subArray$Gene == \"Ref\")\n    \n    ref_CC_average = mean(subRef$CC)\n    ref_R_average = mean(subRef$R)\n    ref_SizeDiff_average = mean(subRef$SizeDiff)\n    \n    for(strain in sort(unique(subArray$Gene))){\n      \n      subStrain = subset(subArray, subArray$Gene == strain)\n      \n      for(spot in sort(unique(subStrain$Well))){\n        #data for all time points for a particular spot\n        subSpot = subset(subStrain, subStrain$Well == spot)\n        \n        CC_norm = subSpot$CC / ref_CC_average\n        \n        normCC[modeled_df$Condition == condition & \n                 modeled_df$Array == array & \n                 modeled_df$Gene == strain & \n                 modeled_df$Well == spot] = CC_norm\n        \n        R_norm = subSpot$R / ref_R_average\n        \n        normR[modeled_df$Condition == condition & \n                modeled_df$Array == array & \n                modeled_df$Gene == strain & \n                modeled_df$Well == spot] = R_norm\n        \n        SizeDiff_norm = subSpot$SizeDiff / ref_SizeDiff_average\n        \n        normSizeDiff[modeled_df$Condition == condition & \n                modeled_df$Array == array & \n                modeled_df$Gene == strain & \n                modeled_df$Well == spot] = SizeDiff_norm\n      }\n    }\n  }\n}\n\n\nmodeled_df$Norm_CC = normCC\nmodeled_df$Norm_R = normR\nmodeled_df$Norm_SizeDiff = normSizeDiff\n\nwrite.table(modeled_df,\"logistic_growth.normalized.tab\",row.names=F,sep=\"\\t\")",
+    "created" : 1502898767613.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1099359528",
+    "id" : "2A0596FE",
+    "lastKnownWriteTime" : 1504288970,
+    "last_content_update" : 1504288970170,
+    "path" : "~/Sequencing_Research/Tools_&_Data/Robot Image Analysis Development/Robot Image Analysis 2.0.1/LogisticGrowth/normalize_logistic_parameters.R",
+    "project_path" : "normalize_logistic_parameters.R",
+    "properties" : {
+    },
+    "relative_order" : 9,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}

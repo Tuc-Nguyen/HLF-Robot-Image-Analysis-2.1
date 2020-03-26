@@ -1,0 +1,2 @@
+Array	Media	Temp	Row	Column	Rationale
+6	SOE	37	28	30	Two spots smeared together due to me dropping the plate

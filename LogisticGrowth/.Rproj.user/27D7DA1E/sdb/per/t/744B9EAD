@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "###Remove any strain containing less than 3 remaining technical replicates after prior filtering\n\nlibrary(dplyr)\n\nmodeled_file = \"logistic_growth.omit_errors_lowcorr_outlierRate_outlierMaxSize.tab\"\n\nclasses = c(\"numeric\",\"numeric\",\"character\",\"factor\",\n            #Row        Col         Name      Media\n            \"factor\",\"factor\",  \"factor\", \"character\",\n            #Temp    Array(1-6)  Condition    Well      \n            \"numeric\",\"numeric\",\"numeric\", \"numeric\")\n#             CC          R        MinSize     Corr\n\nmodeled_df = read.table(modeled_file,header=T, colClasses=classes,sep=\"\\t\")\n\narrays = sort(unique(modeled_df$Array))\n\nconditions = sort(unique(modeled_df$Condition))\n\noutlierDF = data.frame(Gene = character(),\n                       Media = factor(),\n                       Temp = factor(),\n                       Array = factor(),\n                       Well = character())\n\n\nfor(array in arrays){\n  subArray = subset(modeled_df, modeled_df$Array == array)\n  for(condition in conditions){\n    subCondition = subset(subArray, subArray$Condition == condition)\n    \n    names = sort(unique(subCondition$Gene))\n    for(name in names){\n      block = subset(subCondition,subCondition$Gene == name)\n      \n      #script fails if block has too few spots\n      #need to remove blocks with < cutoff spots\n      \n      if(nrow(block) < 3){\n        block = block[,c(3,4,5,6,8)]\n        outlierDF = rbind(outlierDF,block)\n        \n      }\n    }\n  }\n}\n\n\noutlier_removed_df = anti_join(modeled_df, outlierDF, by = c(\"Media\" , \"Temp\", \"Array\", \"Gene\"))\n\nwrite.table(outlier_removed_df, \"logistic_growth.omit_errors_lowcorr_outlierRate_outlierMaxSize_under3Reps.tab\",row.names = F, sep = \"\\t\")\n",
+    "created" : 1502903923271.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2971376839",
+    "id" : "744B9EAD",
+    "lastKnownWriteTime" : 1504288962,
+    "last_content_update" : 1504288962319,
+    "path" : "~/Sequencing_Research/Tools_&_Data/Robot Image Analysis Development/Robot Image Analysis 2.0.1/LogisticGrowth/remove_under_3_replicates.R",
+    "project_path" : "remove_under_3_replicates.R",
+    "properties" : {
+    },
+    "relative_order" : 7,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}

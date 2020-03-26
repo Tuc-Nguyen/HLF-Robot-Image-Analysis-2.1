@@ -1,0 +1,21 @@
+{
+    "debugBreakpointsState" : {
+        "breakpoints" : [
+            {
+                "editor_line_number" : 27,
+                "editor_state" : 1,
+                "function_name" : "toplevel",
+                "function_steps" : "",
+                "id" : 0,
+                "is_package_breakpoint" : false,
+                "is_pending_debug_completion" : false,
+                "line_number" : 27,
+                "needs_updated_steps" : false,
+                "package_name" : "",
+                "path" : "C:/Users/JWolters/Dropbox/Landry Screen June 2016/Selection 2 Analysis/data/compare_size/percent_mean_diff/percent_mean_diff_haploids.R",
+                "state" : 1,
+                "type" : 1
+            }
+        ]
+    }
+}

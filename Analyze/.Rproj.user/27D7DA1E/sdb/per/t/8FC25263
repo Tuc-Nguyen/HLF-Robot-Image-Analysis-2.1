@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "##Analyze\n\n#EBImage - required for gitter\nsource(\"https://bioconductor.org/biocLite.R\")\nbiocLite(\"EBImage\")\n#gitter for image analysis\ninstall.packages(\"gitter\")\n\n##Process\n\n#dplyr - for removing outliers, also used in LogisticGrowth\ninstall.packages(\"dplyr\")\n\n##LogisticGrowth\n\n#ggplot2 - for graphing the outputs\ninstall.packages(\"ggplot2\")\n\n#nls2 - for fitting logistic growth model\ninstall.packages(\"nls2\")\n",
+    "created" : 1505486238922.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3905969119",
+    "id" : "8FC25263",
+    "lastKnownWriteTime" : 1505487069,
+    "last_content_update" : 1505487069077,
+    "path" : "~/Sequencing_Research/Tools_&_Data/Robot Image Analysis Development/Robot Image Analysis 2.0.1/Analyze/install_required_packages.R",
+    "project_path" : "install_required_packages.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

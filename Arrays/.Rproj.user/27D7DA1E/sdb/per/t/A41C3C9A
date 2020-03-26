@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "####This script takes in a 96 array\n####and outputs the 1536 array resulting from 1x96->1x384-> 1x1536\n\n#The program outputs the 384 array as a matrix and row,col,gene table\n#and the same for the 1536 array\n\n#----INPUTS\n\n#specify the list of input arrays\n#program will loop and run each input seperately\n\ninputs = c(\"Array1.96.table.txt\")\n\n#note that the code here is the same for 16 or 32 blocks, only the inputs change\n\n\n#####everything below this point should be automatic\n\n\n\nfor(inputFileName in inputs){\n  \n  classes = c(\"numeric\",\"numeric\",\"character\")\n  \n  input = read.table(inputFileName, header=T,colClasses = classes) #read input data\n  \n  base_file_name = strsplit(inputFileName, \"\\\\.\")[[1]][1]\n  \n  #sort input by row then by column\n  \n  input = input[order(input$Row,input$Column),]\n  \n  ##build the 384 array\n  \n  genes_384 = vector(length=384)\n  \n  i = 1\n  \n  for(row in seq(1,8)){\n    row_values = input$Gene[input$Row == row]\n    \n    dup_values = rep(row_values,each=2)\n    \n    genes_384[i:(i+23)] = dup_values\n    \n    i = i + 24\n    \n    genes_384[i:(i+23)] = dup_values\n    \n    i = i + 24\n  }\n  \n  array384 = matrix(genes_384,nrow = 16, ncol = 24, byrow = T)\n  \n  fn = paste(base_file_name,\"384\",\"matrix\",\"txt\", sep = \".\")\n  \n  write(t(array384),fn, ncolumns = 24, sep = \"\\t\")\n  \n  \n  \n  ##build the 384 data frame\n  rows = rep(seq(1:16), each = 24)\n  \n  columns = rep(seq(1:24),16)\n  \n  df384 = data.frame(Row=rows,Column=columns,Gene=genes_384)\n  \n  df384$Gene = as.character(df384$Gene)\n  \n  fn = paste(base_file_name,\"384\",\"table\",\"txt\",sep=\".\")\n  \n  write.table(df384,fn, row.names = FALSE,sep=\"\\t\")\n  \n  ###build the 1536 array\n  \n  genes_1536 = vector(length=1536)\n  \n  i = 1\n  \n  for(row in seq(1,16)){\n    row_values = df384$Gene[df384$Row == row]\n    \n    dup_values = rep(row_values,each=2)\n    \n    genes_1536[i:(i+47)] = dup_values\n    \n    i = i + 48\n    \n    genes_1536[i:(i+47)] = dup_values\n    \n    i = i + 48\n  }\n  \n  array1536 = matrix(genes_1536,nrow = 32, ncol = 48, byrow = T)\n  \n  fn = paste(base_file_name,\"1536\",\"matrix\",\"txt\", sep = \".\")\n  \n  write(t(array1536),fn, ncolumns = 48, sep = \"\\t\")\n  \n  \n  ##build the 1536 data frame\n  rows = rep(seq(1:32), each = 48)\n  \n  columns = rep(seq(1:48),32)\n  \n  df1536 = data.frame(Row=rows,Column=columns,Gene=genes_1536)\n  \n  df1536$Gene = as.character(df1536$Gene)\n  \n  fn = paste(base_file_name,\"1536\",\"table\",\"txt\",sep=\".\")\n  \n  write.table(df1536,fn, row.names = FALSE,sep=\"\\t\")\n  \n}\n\n\n",
+    "created" : 1496325486352.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2260148011",
+    "id" : "A41C3C9A",
+    "lastKnownWriteTime" : 1504277296,
+    "last_content_update" : 1504277296625,
+    "path" : "~/Sequencing_Research/Tools_&_Data/Robot Image Analysis Development/Robot Image Analysis 2.0/Arrays/expand_arrays.R",
+    "project_path" : "expand_arrays.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "##Remove technical replicates for which the model did not have a good correlation\n\nmodeled_file = \"logistic_growth.omit_errors.tab\"\n\nclasses = c(\"numeric\",\"numeric\",\"character\",\"factor\",\n            #Row        Col         Name      Media\n            \"factor\",\"factor\",  \"factor\", \"character\",\n            #           Temp    Array(1-6)  Condition    Well      \n            \"numeric\",\"numeric\",\"numeric\", \"numeric\")\n#             CC          R        MinSize     Corr\n\nmodeled_df = read.table(modeled_file,header=T, colClasses=classes,sep=\"\\t\")\n\n\n####SET ARBITRARY CORRELATION CUTOFF\ncorr_cutoff = 0.95\n\nmodeled_df = subset(modeled_df, modeled_df$Corr > corr_cutoff)\n\n\nwrite.table(modeled_df, \"logistic_growth.omit_errors_lowcorr.tab\",sep=\"\\t\",row.names = F)\n",
+    "created" : 1502898259885.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1588109053",
+    "id" : "FD4E08EA",
+    "lastKnownWriteTime" : 1504288949,
+    "last_content_update" : 1504288949733,
+    "path" : "~/Sequencing_Research/Tools_&_Data/Robot Image Analysis Development/Robot Image Analysis 2.0.1/LogisticGrowth/remove_poor_fit.R",
+    "project_path" : "remove_poor_fit.R",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : true,
+    "source_window" : "",
+    "type" : "r_source"
+}

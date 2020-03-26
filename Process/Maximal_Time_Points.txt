@@ -1,0 +1,2 @@
+Media	Temp	Array	Max
+YPEG	37	1	104.5
